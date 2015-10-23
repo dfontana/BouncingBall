@@ -3,14 +3,14 @@ class Ball
     @d = 20
     @radius = @d/2
     @win = win
-    @gravity = 0.9
-    @friction = 0.7
-    @frictionY = 0.7
+    @gravity = 0.5
+    @friction = 0.98
+    @frictionY = 0.98
     @heightGain = 1.125
     @x = rand(@radius..(win.width - @radius))
     @y = rand(@radius..(win.height - @radius) * 0.5)
-    @vx = 5
-    @vy = 5
+    @vx = 2
+    @vy = 3
 		@maxSpeed = 30
     @image = Gosu::Image.new(win, 'media/ball.png', true)
   end
