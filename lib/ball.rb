@@ -4,7 +4,7 @@ class Ball
     @radius = @d/2
     @win = win
     @gravity = 0.5
-    @friction = 0.77
+    @friction = 0.98
     @frictionY = 0.98
     @heightGain = 1.125
     @x = rand(@radius..(win.width - @radius))
