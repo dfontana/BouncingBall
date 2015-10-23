@@ -60,7 +60,7 @@ class Ball
       @vy *= 0.5
     end
 
-    puts "Vy #{@vy} Vx #{@vx}" #DEBUG LINE
+    #puts "Vy #{@vy} Vx #{@vx}" #DEBUG LINE
   end
 
 	
