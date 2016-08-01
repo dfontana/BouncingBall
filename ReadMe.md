@@ -12,7 +12,7 @@ Using the GOSU Gem, a minigame was made to control a bouncing ball using pseudo-
 
 Naturally, this project should be considered 'rough' in every sense of the term.
 
-## Notes to Self: Bugs
+## Notes to Self: Defects
 (I could use issue tracking, but this is of minor tinkering importance)
 - After bouncing on bottom boundary of window, ball gains velocity (shouldn't)
 - Ball ignores collisions with rectangles sporadically
