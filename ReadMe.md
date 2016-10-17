@@ -4,4 +4,5 @@ Consider it rough in every sense of the word.
 Currently is suffering multiple bugs:
 
 	- After bouncing on bottom boundary of window, ball gains velocity (shouldn't)
-	- Ball ignores collisions with rectangles sporadically
+	- Ball ignores collisions with rectangles sporadically (Jumps through blocks, clips corners, climbs walls)
+        

@@ -19,39 +19,28 @@ class Rectangle
   def update
   end
 
-  def stay_on_platform?(ball)
-    if (ball.getX >= @x && ball.getX <= @x+@width) &&
-       (ball.getY+ball.getRadius <= @y+@height) &&
-       (ball.getY-ball.getRadius >= @y-(2.25*ball.getRadius))
-
-       ball.sitStill(@y)
-    else
-      ball.toggleGrav(true)
-    end
-  end
-
   def hitTop?(ball)
     #check the top
     @hitTop = ((ball.getY+ball.getRadius >= @y) &&
               (ball.getY+ball.getRadius <= @y+@height)) &&
               ((ball.getX >= @x) && (ball.getX <= @x+@width))
   end
-
+  
   def hitBot?(ball)
     #check the bottom
     @hitBot = ((ball.getY-ball.getRadius >= @y) &&
               (ball.getY-ball.getRadius <= @y+@height)) &&
-							((ball.getX+ball.getRadius >= @x) && 
-							(ball.getX-ball.getRadius <= @x+@width))
+  					((ball.getX+ball.getRadius >= @x) && 
+  					(ball.getX-ball.getRadius <= @x+@width))
   end
-
+  
   def hitLeft?(ball)
     #check the left
     @hitLeft = ((ball.getY >= @y) && (ball.getY <= @y+@height)) &&
                ((ball.getX+ball.getRadius >= @x) &&
                (ball.getX+ball.getRadius <= @x+@width))
   end
-
+  
   def hitRight?(ball)
     #check the right
     @hitRight = ((ball.getY >= @y) && (ball.getY <= @y+@height)) &&
