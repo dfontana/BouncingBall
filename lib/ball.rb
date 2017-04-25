@@ -22,6 +22,8 @@ class Ball
         # Check for collision with platforms
         collision_check(platforms)
 
+        # TODO this is flat out redundant and double modify's the ball's Y. 
+        #   Remove or adjust in accordance with collision check.
         # Check for collision with bottom of window
         if (@y + @vy) >= (@win.height - @radius)
             # place ball on bottom of window
@@ -31,6 +33,10 @@ class Ball
             @y += @vy
         end
 
+        # TODO:
+        #   1) Rethink how much the buttons affect the ball, and if they should affect it before or after collision detection
+        #   2) Update the 3 if statements to be the same format (2 different formats at the moment)
+        #   3) Natural velocity gains should go back to being a multiplicative interaction, not additive.
         # Button Controls
         if Gosu.button_down? Gosu::KbLeft
             @vx -= 0.75 if @vx.abs < @maxSpeed
@@ -47,6 +53,12 @@ class Ball
         @x += @vx
     end
 
+    # TODO:
+    #   1) The bottom wall check is being done here and in the move function. Remove this redundancy.
+    #   2) The platform detection shouldn't rely on which side or if the ball is within the box. That's just wrong.
+    #       Instead compute the destination of the ball. Check if any platforms intersect the path between current
+    #       ball position and this destination. If so, a collision would occur and you would set the ball to be on 
+    #       the clostest face of the platform, reversing it's direction. (there's some specifics in there to work on)
     def collision_check(platforms)
         #=== ROOM EDGE DETECTION ===#
         if hit_right_wall
@@ -90,6 +102,7 @@ class Ball
     end
 
     #=== // READABILITY METHODS // ===#
+    # TODO this should just change direction and nothing else. If velocity is to be impacted, do it from the caller.
     def change_direction(direction)
         return direction *= -0.85
     end

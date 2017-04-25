@@ -19,6 +19,8 @@ class Rectangle
   def update
   end
 
+  # TODO these "hit" methods will need extensive revision / removal.
+  # Which will be determined by the approach taken in the ball refactor.
   def hitTop?(ball)
     #check the top
     @hitTop = ((ball.getY+ball.getRadius >= @y) &&
