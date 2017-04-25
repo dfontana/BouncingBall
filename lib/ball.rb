@@ -19,38 +19,41 @@ class Ball
     end
 
     def move(platforms)
-        # Check for collision with platforms
-        collision_check(platforms)
-
-        # TODO this is flat out redundant and double modify's the ball's Y. 
-        #   Remove or adjust in accordance with collision check.
-        # Check for collision with bottom of window
-        if (@y + @vy) >= (@win.height - @radius)
-            # place ball on bottom of window
-            @y = (@win.height - @radius)
-        else
-            # continue building speed
-            @y += @vy
-        end
-
-        # TODO:
-        #   1) Rethink how much the buttons affect the ball, and if they should affect it before or after collision detection
-        #   2) Update the 3 if statements to be the same format (2 different formats at the moment)
-        #   3) Natural velocity gains should go back to being a multiplicative interaction, not additive.
-        # Button Controls
-        if Gosu.button_down? Gosu::KbLeft
-            @vx -= 0.75 if @vx.abs < @maxSpeed
-        end
-
-        if Gosu.button_down? Gosu::KbRight
-            @vx += 0.75 if @vx.abs < @maxSpeed
-        end
-
+        # 1. Check if buttons are being used to manipulate, account for them.
+        @vx -= 0.75 if Gosu.button_down?(Gosu::KbLeft) && @vx.abs < @maxSpeed
+        @vx += 0.75 if Gosu.button_down?(Gosu::KbRight) && @vx.abs < @maxSpeed
         @vy *= 1.25 if Gosu.button_down?(Gosu::KbDown) && @vy.abs < @maxSpeed
 
-        # Natural velocity gains
+        # 2. Update Gravity
+        # TODO make this multiplicative instead of additive.
         @vy += @gravity if @vy.abs < @maxSpeed
-        @x += @vx
+
+        # 3. Compute where the ball *would* land, if updated right now.
+        dX = @x + @vx
+        dY = @y + @vy
+
+        # 4. Perform the collision detection.
+        #       If no collision, update as normal
+        #       If collision, set x & y to the collision point and:
+        #           If it was a collision with a vertical (top/bot of level or rectangle), invert vy
+        #           else (it was horizontal), invert vx
+
+        # 5. done.
+
+
+        # Check for collision with platforms
+        # collision_check(platforms)
+
+        # # TODO this is flat out redundant and double modify's the ball's Y. 
+        # #   Remove or adjust in accordance with collision check.
+        # # Check for collision with bottom of window
+        # if (@y + @vy) >= (@win.height - @radius)
+        #     # place ball on bottom of window
+        #     @y = (@win.height - @radius)
+        # else
+        #     # continue building speed
+        #     @y += @vy
+        # end
     end
 
     # TODO:
