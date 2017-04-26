@@ -22,13 +22,13 @@ class Rectangle
   # Returns 0 if no collision, or (X,Y) where collision will occur
   # TODO need to check all 4 faces of rectangle. 
   #   - Break into 4 methods, one per face. 
-  #   - (Set the rx / ry / bx / by in each and then call shared method & return it's value.)
+  #   - (Set the rx / ry / bx / by in each and then call shared method & return it's value .)
   def willCollide?(ball, dx, dy)
     #Vectors:
-    rx = @width
+    rx = @width 
     ry = @height
     bx = dx - ball.getX
-    by = dy - ball.getY
+    by = dy - ball.getY 
 
     #Determinant Check (Parallel or collinear)
     return 0 if (rx * by) - (bx * ry) == 0
