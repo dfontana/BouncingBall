@@ -19,51 +19,26 @@ class Rectangle
   def update
   end
 
-  # TODO these "hit" methods will need extensive revision / removal.
-  # Which will be determined by the approach taken in the ball refactor.
-  def hitTop?(ball)
-    #check the top
-    @hitTop = ((ball.getY+ball.getRadius >= @y) &&
-              (ball.getY+ball.getRadius <= @y+@height)) &&
-              ((ball.getX >= @x) && (ball.getX <= @x+@width))
-  end
-  
-  def hitBot?(ball)
-    #check the bottom
-    @hitBot = ((ball.getY-ball.getRadius >= @y) &&
-              (ball.getY-ball.getRadius <= @y+@height)) &&
-  					((ball.getX+ball.getRadius >= @x) && 
-  					(ball.getX-ball.getRadius <= @x+@width))
-  end
-  
-  def hitLeft?(ball)
-    #check the left
-    @hitLeft = ((ball.getY >= @y) && (ball.getY <= @y+@height)) &&
-               ((ball.getX+ball.getRadius >= @x) &&
-               (ball.getX+ball.getRadius <= @x+@width))
-  end
-  
-  def hitRight?(ball)
-    #check the right
-    @hitRight = ((ball.getY >= @y) && (ball.getY <= @y+@height)) &&
-                ((ball.getX-ball.getRadius >= @x) &&
-                (ball.getX-ball.getRadius <= @x+@width))
-  end
+  # Returns 0 if no collision, or (X,Y) where collision will occur
+  # TODO need to check all 4 faces of rectangle. 
+  #   - Break into 4 methods, one per face. 
+  #   - (Set the rx / ry / bx / by in each and then call shared method & return it's value.)
+  def willCollide?(ball, dx, dy)
+    #Vectors:
+    rx = @width
+    ry = @height
+    bx = dx - ball.getX
+    by = dy - ball.getY
 
-  def getMaxX
-    @x + @width
-  end
+    #Determinant Check (Parallel or collinear)
+    return 0 if (rx * by) - (bx * ry) == 0
 
-  def getMaxY
-    @y + @height
-  end
+    #Paramters:
+    t = ((@y - dy) * bx - by * (x - dx)) / ((rx * by) - (bx * ry))
+    u = ((@y - dy) * rx - ry * (x - dx)) / ((rx * by) - (bx * ry))
 
-  def getY
-    @y
+    #Collison check
+    return [x+(t*rx), y+(t*ry)] if u.between?(0,1) && t.between?(0,1)
+    return 0
   end
-
-  def getX
-    @x
-  end
-
 end

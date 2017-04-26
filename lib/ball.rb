@@ -18,6 +18,12 @@ class Ball
         @image.draw_rot(@x, @y, 0, 0)
     end
 
+    # TODO: reimplement friction / energy loss per update
+    # Options:
+    #   -> Decay Vx and Vy each update by a set amount (additive) or percentage (multiplicative)
+    #   -> Introduce friction on collision (when colliding, reduce Vx and Vy for next update by percentage)
+    #   -> Decrease/Increase Vx and Vy as a factor of height + gravity (higher height = lower vy)
+    #   -> A combination of the above
     def move(platforms)
         # 1. Check if buttons are being used to manipulate, account for them.
         @vx -= 0.75 if Gosu.button_down?(Gosu::KbLeft) && @vx.abs < @maxSpeed
@@ -33,101 +39,27 @@ class Ball
         dY = @y + @vy
 
         # 4. Perform the collision detection.
-        #       If no collision, update as normal
-        #       If collision, set x & y to the collision point and:
-        #           If it was a collision with a vertical (top/bot of level or rectangle), invert vy
-        #           else (it was horizontal), invert vx
+        #       1) Look for collision with level walls
+        #           a) Check Left & Right; true? update dx,dy to collision point -> invert Vx -> break to update/return
+        #           b) Check Top & Bottom; true? update dx,dy to collision point -> invert Vy -> break to update/return
+        #       2) Look for first instance of collision in each platform:
+        #           a) Check Left & Right; true? update dX,dY -> invert Vx -> break to update/return
+        #           b) Check Top & Bottom; true? update dX,dY -> invery Vy -> break to update/return
+        #       3) Update based on dX and dY (no need to return).
+        platforms.each do |plat|
+            coor = plat.willCollide(self, dx, dy)
+            if coor.is_a?(Array)
+                # Collided, set the new destination to collision
+                dX = coor[0]
+                dY = coor[1]
 
-        # 5. done.
-
-
-        # Check for collision with platforms
-        # collision_check(platforms)
-
-        # # TODO this is flat out redundant and double modify's the ball's Y. 
-        # #   Remove or adjust in accordance with collision check.
-        # # Check for collision with bottom of window
-        # if (@y + @vy) >= (@win.height - @radius)
-        #     # place ball on bottom of window
-        #     @y = (@win.height - @radius)
-        # else
-        #     # continue building speed
-        #     @y += @vy
-        # end
-    end
-
-    # TODO:
-    #   1) The bottom wall check is being done here and in the move function. Remove this redundancy.
-    #   2) The platform detection shouldn't rely on which side or if the ball is within the box. That's just wrong.
-    #       Instead compute the destination of the ball. Check if any platforms intersect the path between current
-    #       ball position and this destination. If so, a collision would occur and you would set the ball to be on 
-    #       the clostest face of the platform, reversing it's direction. (there's some specifics in there to work on)
-    def collision_check(platforms)
-        #=== ROOM EDGE DETECTION ===#
-        if hit_right_wall
-            @x = (@win.width - @radius)
-            @vx = change_direction(@vx)
-        elsif hit_left_wall
-            @x = @radius
-            @vx = change_direction(@vx)
-        elsif hit_top
-            @y = @radius
-            giveFriction
-            @vy = change_direction(@vy)
-        elsif hit_bottom
-            @y = (@win.height - @radius)
-            giveFriction
-            @vy = change_direction(@vy)
-        end
-
-        #=== PLATFORM DETECTION ===#
-        platforms.each do |item|
-            if item.hitTop?(self)
-                @y = item.getY - @radius
-                hitVertical
-            elsif item.hitBot?(self)
-                @y = item.getMaxY + @radius
-                hitVertical
-            elsif item.hitLeft?(self)
-                @x = item.getX - @radius
-                @vx = change_direction(@vx)
-            elsif item.hitRight?(self)
-                @x = item.getMaxX + @radius
-                @vx = change_direction(@vx)
+                # Invert the correct velocity
+                break
             end
         end
-    end # END OF COLLISION_CHECK
 
-    def hitVertical
-        giveFriction
-        @vy *= @frictionY
-        @vy = change_direction(@vy)
-    end
-
-    #=== // READABILITY METHODS // ===#
-    # TODO this should just change direction and nothing else. If velocity is to be impacted, do it from the caller.
-    def change_direction(direction)
-        return direction *= -0.85
-    end
-
-    def giveFriction
-        @vx *= @friction
-    end
-
-    def hit_right_wall
-        @x >= @win.width - @radius
-    end
-
-    def hit_left_wall
-        @x <= @radius
-    end
-
-    def hit_bottom
-        @y >= @win.height - @radius
-    end
-
-    def hit_top
-        @y <= @radius
+        @x = dX
+        @y = dY
     end
 
     def getX
@@ -136,9 +68,5 @@ class Ball
 
     def getY
         @y
-    end
-
-    def getRadius
-        @radius
     end
 end
