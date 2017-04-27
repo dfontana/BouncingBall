@@ -20,74 +20,28 @@
     end
     
     # Returns 0 if no collision, or (X,Y) where collision will occur
-    # TODO need to check all 4 faces of rectangle. 
-    #   - Break into 4 methods, one per face. 
-    #   - (Set the rx / ry / bx / by in each and then call shared method & return it's value .)
-    def willCollide?(ball, dx, dy)
-      #Vectors:
-      rx = @width 
-      ry = @height
-      bx = dx - ball.getX
-      by = dy - ball.getY 
-      
-      #Determinant Check (Parallel or collinear)
-      return 0 if (rx * by) - (bx * ry) == 0
-      
-      #Paramters:
-      t = ((@y - dy) * bx - by * (@x - dx)) / ((rx * by) - (bx * ry))
-      u = ((@y - dy) * rx - ry * (@x - dx)) / ((rx * by) - (bx * ry))
-      
-      #Collison check
-      return [@x+(t*rx), @y+(t*ry)] if u.between?(0,1) && t.between?(0,1)
-      return 0
-    end
-    
-    def topCollision?(ball, dx, dy)
-      #Vectors:
-      rx = @width           #p2.x - p1.x
-      ry = 0                #p2.y - p1.y
+    def horizontalCollision?(ball, dx, dy)
       bx = dx - ball.getX   #p4.x - p3.x
       by = dy - ball.getY   #p4.y - p3.y
-      x = @x
-      y = @y
 
-      return intersection(x, y,rx, ry, bx, by, dx, dy)
-    end
-    
-    def bottomCollision?(ball, dx, dy)
-      #Vectors:
-      rx = @width           #p2.x - p1.x
-      ry = 0                #p2.y - p1.y
-      bx = dx - ball.getX   #p4.x - p3.x
-      by = dy - ball.getY   #p4.y - p3.y
-      x = @x+@height
-      y = @y
-      
-      return intersection(x, y,rx, ry, bx, by, dx, dy)
+      #left
+      coor = intersection(@x, @y, 0, @height, bx, by, dx, dy)
+      return coor if coor.is_a?(Array)
+
+      #right
+      return intersection(@x+@width, @y, 0, @height, bx, by, dx, dy)
     end
 
-    def leftCollision?(ball, dx, dy)
-      #Vectors:
-      rx = 0                #p2.x - p1.x
-      ry = @height          #p2.y - p1.y
+    def verticalCollision?(ball, dx, dy)
       bx = dx - ball.getX   #p4.x - p3.x
       by = dy - ball.getY   #p4.y - p3.y
-      x = @x
-      y = @y
-      
-      return intersection(x, y,rx, ry, bx, by, dx, dy)
-    end
 
-    def rightCollision?(ball, dx, dy)
-      #Vectors:
-      rx = 0                #p2.x - p1.x
-      ry = @height          #p2.y - p1.y
-      bx = dx - ball.getX   #p4.x - p3.x
-      by = dy - ball.getY   #p4.y - p3.y
-      x = @x+@width
-      y = @y
+      #top
+      coor = intersection(@x, @y, @width, 0, bx, by, dx, dy)
+      return coor if coor.is_a?(Array)
       
-      return intersection(x, y,rx, ry, bx, by, dx, dy)
+      # bottom
+      return intersection(@x+@height, @y, @width, 0, bx, by, dx, dy)
     end
 
     def intersection(x, y,rx, ry, bx, by, dx, dy)
