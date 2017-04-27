@@ -19,6 +19,18 @@
     def update
     end
     
+    def verticalCollision?(ball, dx, dy)
+      bx = dx - ball.getX   #p4.x - p3.x
+      by = dy - ball.getY   #p4.y - p3.y
+
+      #top
+      coor = intersection(@x, @y, @width, 0, bx, by, dx, dy)
+      return coor if coor.is_a?(Array)
+      
+      # bottom
+      return intersection(@x, @y+@height, @width, 0, bx, by, dx, dy)
+    end
+
     # Returns 0 if no collision, or (X,Y) where collision will occur
     def horizontalCollision?(ball, dx, dy)
       bx = dx - ball.getX   #p4.x - p3.x
@@ -30,18 +42,6 @@
 
       #right
       return intersection(@x+@width, @y, 0, @height, bx, by, dx, dy)
-    end
-
-    def verticalCollision?(ball, dx, dy)
-      bx = dx - ball.getX   #p4.x - p3.x
-      by = dy - ball.getY   #p4.y - p3.y
-
-      #top
-      coor = intersection(@x, @y, @width, 0, bx, by, dx, dy)
-      return coor if coor.is_a?(Array)
-      
-      # bottom
-      return intersection(@x+@height, @y, @width, 0, bx, by, dx, dy)
     end
 
     def intersection(x, y,rx, ry, bx, by, dx, dy)
