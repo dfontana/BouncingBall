@@ -47,28 +47,28 @@ class Ball
         #           b) Check Top & Bottom; true? update dX,dY -> invery Vy -> break to update/return
         #       3) Update based on dX and dY (no need to return).
         platforms.each do |plat|
-            coor = plat.topCollision?(self, dx, dy)
+            coor = plat.topCollision?(self, dX, dY)
             if coor.is_a?(Array)
                 # Collided, set the new destination to collision
                 puts "Collision Top"
                 # Invert the correct velocity
                 break
             end
-            coor = plat.bottomCollision?(self, dx, dy)
+            coor = plat.bottomCollision?(self, dX, dY)
             if coor.is_a?(Array)
                 # Collided, set the new destination to collision
                 puts "Collision bottom"
                 # Invert the correct velocity
                 break
             end
-            coor = plat.leftCollision?(self, dx, dy)
+            coor = plat.leftCollision?(self, dX, dY)
             if coor.is_a?(Array)
                 # Collided, set the new destination to collision
                 puts "Collision Left"
                 # Invert the correct velocity
                 break
             end
-            coor = plat.rightCollision?(self, dx, dy)
+            coor = plat.rightCollision?(self, dX, dY)
             if coor.is_a?(Array)
                 # Collided, set the new destination to collision
                 puts "Collision Right"

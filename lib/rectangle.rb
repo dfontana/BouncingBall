@@ -50,7 +50,7 @@
       by = dy - ball.getY   #p4.y - p3.y
       p1 = {'x' => @x, 'y' => @y}
 
-      return intersection(rx, ry, bx, by, p1)
+      return intersection(rx, ry, bx, by, p1, dx, dy)
     end
     
     def bottomCollision?(ball, dx, dy)
@@ -61,7 +61,7 @@
       by = dy - ball.getY   #p4.y - p3.y
       p1 = {'x' => @x+@height, 'y' => @y}
       
-      return intersection(rx, ry, bx, by, p1)
+      return intersection(rx, ry, bx, by, p1, dx, dy)
     end
 
     def leftCollision?(ball, dx, dy)
@@ -72,7 +72,7 @@
       by = dy - ball.getY   #p4.y - p3.y
       p1 = {'x' => @x, 'y' => @y}
       
-      return intersection(rx, ry, bx, by, p1)
+      return intersection(rx, ry, bx, by, p1, dx, dy)
     end
 
     def rightCollision?(ball, dx, dy)
@@ -83,21 +83,21 @@
       by = dy - ball.getY   #p4.y - p3.y
       p1 = {'x' => @x+@width, 'y' => @y}
       
-      return intersection(rx, ry, bx, by, p1)
+      return intersection(rx, ry, bx, by, p1, dx, dy)
     end
 
-    def intersection(rx, ry, bx, by, p1)
+    def intersection(rx, ry, bx, by, p1, dx, dy)
       #Determinant Check (Parallel or collinear)
       return 0 if (rx * by) - (bx * ry) == 0
       
       #Paramters:
       # t = ((p1.y-p4.y) * bx) - (by * (p1.x-p4.x)) / ((rx*by) - (bx*ry))
       # u = ((p1.y-p4.y) * rx) - (ry * (p1.x-p4.x)) / ((rx*by) - (bx*ry))
-      t = ((p1[y] - dy) * bx - by * (p1[x] - dx)) / ((rx * by) - (bx * ry))
-      u = ((p1[y] - dy) * rx - ry * (p1[x] - dx)) / ((rx * by) - (bx * ry))
+      t = ((p1['y'] - dy) * bx - by * (p1['x'] - dx)) / ((rx * by) - (bx * ry))
+      u = ((p1['y'] - dy) * rx - ry * (p1['x'] - dx)) / ((rx * by) - (bx * ry))
       
       #Collison check
-      return [p1[x]+(t*rx), p1[y]+(t*ry)] if u.between?(0,1) && t.between?(0,1)
+      return [p1['x']+(t*rx), p1['y']+(t*ry)] if u.between?(0,1) && t.between?(0,1)
       return 0
     end
   end
