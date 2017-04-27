@@ -34,11 +34,11 @@ class Rectangle
     return 0 if (rx * by) - (bx * ry) == 0
 
     #Paramters:
-    t = ((@y - dy) * bx - by * (x - dx)) / ((rx * by) - (bx * ry))
-    u = ((@y - dy) * rx - ry * (x - dx)) / ((rx * by) - (bx * ry))
+    t = ((@y - dy) * bx - by * (@x - dx)) / ((rx * by) - (bx * ry))
+    u = ((@y - dy) * rx - ry * (@x - dx)) / ((rx * by) - (bx * ry))
 
     #Collison check
-    return [x+(t*rx), y+(t*ry)] if u.between?(0,1) && t.between?(0,1)
+    return [@x+(t*rx), @y+(t*ry)] if u.between?(0,1) && t.between?(0,1)
     return 0
   end
 end

@@ -47,7 +47,7 @@ class Ball
         #           b) Check Top & Bottom; true? update dX,dY -> invery Vy -> break to update/return
         #       3) Update based on dX and dY (no need to return).
         platforms.each do |plat|
-            coor = plat.willCollide(self, dx, dy)
+            coor = plat.willCollide?(self, dX, dY)
             if coor.is_a?(Array)
                 # Collided, set the new destination to collision
                 dX = coor[0]
