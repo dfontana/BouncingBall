@@ -12,7 +12,6 @@ Using the GOSU Gem, a minigame was made to control a bouncing ball using pseudo-
 The project laid dormant for some time, yet the messy collisions and poor physics left me disgruntled. This project has now resumed development, slowly being repaired for better collision detection and perhaps a little more convincing physics. Just becuase the job can't go undone.
 
 ## Current TODO / Fixes
-- [ ] Install GOSU on the new machine
 - [ ] Ball ignores collisions with platforms sporadically
  - [ ] Rework collision detection based on segment intersection
  - [ ] Account for level walls
