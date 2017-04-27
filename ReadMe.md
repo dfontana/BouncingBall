@@ -13,9 +13,11 @@ The project laid dormant for some time, yet the messy collisions and poor physic
 
 ## Current TODO / Fixes
 - [ ] Ball ignores collisions with platforms sporadically
- - [ ] Rework collision detection based on segment intersection
- - [ ] Account for level walls
- - [ ] Determine which face of a platform has been hit
+ - [X] Rework collision detection based on segment intersection
+ - [X] Account for level walls
+ - [X] Determine which face of a platform has been hit
+ - [ ] Upon update vx and vy, need to perform a second collision check to determine if the update puts the ball into another invalid location. If so, the new collision will update the ball to the intersection point and then invert the offending velocity component. Should not need to perform this more than twice.
+- [ ] Player loses control of ball after MaxSpeed is hit. Need a new approach that allows the player to give a brief acceleration (jerk).
 - [ ] General velocity oddities. Options:
  - [ ] Reintroduce Friction in a more controlled manner
  - [ ] Introduce a Decay each update

@@ -4,39 +4,45 @@ class Ball
         @radius = @d / 2
         @win = win
         @gravity = 1.25
-        @friction = 0.98
-        @frictionY = 0.85
         @x = rand(@radius..(win.width - @radius))
         @y = rand(@radius..(win.height - @radius) * 0.5)
         @vx = 2
         @vy = 3
         @maxSpeed = 15
         @image = Gosu::Image.new(win, 'media/ball.png', true)
+        @jumppressed = false
     end
 
     def draw
         @image.draw_rot(@x, @y, 0, 0)
     end
 
-    # TODO: reimplement friction / energy loss per update
-    # Options:
-    #   -> Decay Vx and Vy each update by a set amount (additive) or percentage (multiplicative)
-    #   -> Introduce friction on collision (when colliding, reduce Vx and Vy for next update by percentage)
-    #   -> Decrease/Increase Vx and Vy as a factor of height + gravity (higher height = lower vy)
-    #   -> A combination of the above
     def move(platforms)
         # 1. Check if buttons are being used to manipulate, account for them.
         @vx -= 0.75 if Gosu.button_down?(Gosu::KbLeft) && @vx.abs < @maxSpeed
         @vx += 0.75 if Gosu.button_down?(Gosu::KbRight) && @vx.abs < @maxSpeed
-        @vy *= 1.25 if Gosu.button_down?(Gosu::KbDown) && @vy.abs < @maxSpeed
+
+        if Gosu.button_down?(Gosu::KbSpace) and !@jumppressed
+            @jumppressed = true
+            @vy = -15
+        elsif not Gosu.button_down?(Gosu::KbSpace)
+            @jumppressed = false
+        end
+            
 
         # 2. Update Gravity
-        # TODO make this multiplicative instead of additive.
         @vy += @gravity if @vy.abs < @maxSpeed
 
         # 3. Compute where the ball *would* land, if updated right now.
         dx = @x + @vx
         dy = @y + @vy
+
+        # cancel move if moving out of the window
+        if !dx.between?(0, @win.width) or !dy.between?(0, @win.height)
+            @x = @x - @vx
+            @y = @y - @vy
+            return
+        end
 
         # 4. Perform the collision detection.
         #       1) Look for collision with level walls
