@@ -1,7 +1,6 @@
 class Ball
     def initialize(win)
-        @d = 20
-        @radius = @d / 2
+        @radius = 10
         @win = win
         @gravity = 1.25
         @x = rand(@radius..(win.width - @radius))
@@ -14,7 +13,7 @@ class Ball
     end
 
     def draw
-        @image.draw_rot(@x, @y, 0, 0)
+        @image.draw(@x-@radius, @y-@radius, 0)
     end
 
     def move(platforms)
