@@ -18,8 +18,8 @@ class Ball
 
     def move(platforms)
         # 1. Check if buttons are being used to manipulate, account for them.
-        @vx -= 0.75 if Gosu.button_down?(Gosu::KbLeft) && @vx.abs < @maxSpeed
-        @vx += 0.75 if Gosu.button_down?(Gosu::KbRight) && @vx.abs < @maxSpeed
+        @vx -= 0.75 if Gosu.button_down?(Gosu::KbLeft)
+        @vx += 0.75 if Gosu.button_down?(Gosu::KbRight)
 
         if Gosu.button_down?(Gosu::KbSpace) and !@jumppressed
             @jumppressed = true
@@ -29,8 +29,11 @@ class Ball
         end
             
 
-        # 2. Update Gravity
-        @vy += @gravity if @vy.abs < @maxSpeed
+        # 2. Update Gravity & constraints
+        @vy += @gravity
+        @vy = @maxSpeed if @vy > @maxSpeed
+        @vx = @maxSpeed if @vx > @maxSpeed
+        @vx = -@maxSpeed if @vx < -@maxSpeed
 
         # 3. Compute where the ball *would* land, if updated right now.
         dx = @x + @vx
