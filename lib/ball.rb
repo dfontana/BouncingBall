@@ -4,7 +4,7 @@ class Ball
         @win = win
         @gravity = 1.25
         @x = rand(@radius..(win.width - @radius))
-        @y = rand(@radius..(win.height - @radius) * 0.5)
+        @y = 15
         @vx = 2
         @vy = 3
         @maxSpeed = 15
