@@ -102,42 +102,42 @@ class Ball
     end
 
     def topBottomCollision(dx, dy)
-        bx = dx - @x   #p4.x - p3.x
-        by = dy - @y   #p4.y - p3.y
+        sx = dx - @x   #p4.x - p3.x
+        sy = dy - @y   #p4.y - p3.y
 
         #top
-        coor = intersection(0, 0, @win.width, 0, bx, by, dx, dy) 
+        coor = intersection(0, 0, @win.width, 0, dx, dy, sx, sy) 
         return coor if coor.is_a?(Array)
 
         #bottom
-        return intersection(0, @win.height, @win.width, 0, bx, by, dx, dy) 
+        return intersection(0, @win.height, @win.width, 0, dx, dy, sx, sy) 
     end
 
     def leftRightCollision(dx, dy)
-        bx = dx - @x   #p4.x - p3.x
-        by = dy - @y   #p4.y - p3.y
+        sx = dx - @x   #p4.x - p3.x
+        sy = dy - @y   #p4.y - p3.y
 
         #Left
-        coor = intersection(0, 0, 0, @win.height, bx, by, dx, dy) 
+        coor = intersection(0, 0, 0, @win.height, dx, dy, sx, sy) 
         return coor if coor.is_a?(Array)
 
         #bottom
-        return intersection(@win.width, 0, 0, @win.height, bx, by, dx, dy) 
+        return intersection(@win.width, 0, 0, @win.height, dx, dy, sx, sy) 
     end
 
     # returns false if no intersection, else the intersection point
-    def intersection(x, y, rx, ry, bx, by, dx, dy)
+    def intersection(x, y, rx, ry, bx, by, sx, sy)
       #Determinant Check (Parallel or collinear)
-      return false if (rx * by) - (bx * ry) == 0
+      return false if (rx * sy) - (sx * ry) == 0
       
       #Paramters:
       # t = ((p1.y-p4.y) * bx) - (by * (p1.x-p4.x)) / ((rx*by) - (bx*ry))
       # u = ((p1.y-p4.y) * rx) - (ry * (p1.x-p4.x)) / ((rx*by) - (bx*ry))
-      t = ((y - dy) * bx - by * (x - dx)) / ((rx * by) - (bx * ry))
-      u = ((y - dy) * rx - ry * (x - dx)) / ((rx * by) - (bx * ry))
+      t = ((y - by) * sx - sy * (x - bx)) / ((rx * sy) - (sx * ry))
+      u = ((y - by) * rx - ry * (x - bx)) / ((rx * sy) - (sx * ry))
       
       #Collison check
-      return [x+(t*rx), y+(t*ry)] if u.between?(0,1) && t.between?(0,1)
+      return [bx+(u*sx), by+(u*sy)] if u.between?(0,1) && t.between?(0,1)
       return false
     end
 end
