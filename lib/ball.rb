@@ -137,7 +137,7 @@ class Ball
       u = ((y - by) * rx - ry * (x - bx)) / ((rx * sy) - (sx * ry))
       
       #Collison check
-      return [bx+(u*sx), by+(u*sy)] if u.between?(0,1) && t.between?(0,1)
+      return [bx+((u-0.7)*sx), by+((u-0.7)*sy)] if u.between?(0,1) && t.between?(0,1)
       return false
     end
 end
