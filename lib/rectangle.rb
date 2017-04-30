@@ -19,16 +19,17 @@
     def update
     end
     
+    #todo remove getX/getY
     def verticalCollision?(ball, dx, dy)
       bx = dx - ball.getX   #p4.x - p3.x
       by = dy - ball.getY   #p4.y - p3.y
 
       #top
-      coor = intersection(@x, @y, @width, 0, bx, by, dx, dy)
+      coor = intersection(@x, @y, @width, 0, bx, by, ball.getX, ball.getY)
       return coor if coor.is_a?(Array)
       
       # bottom
-      return intersection(@x, @y+@height, @width, 0, bx, by, dx, dy)
+      return intersection(@x, @y+@height, @width, 0, bx, by, ball.getX, ball.getY)
     end
 
     # Returns 0 if no collision, or (X,Y) where collision will occur
@@ -37,14 +38,14 @@
       by = dy - ball.getY   #p4.y - p3.y
 
       #left
-      coor = intersection(@x, @y, 0, @height, bx, by, dx, dy)
+      coor = intersection(@x, @y, 0, @height, bx, by, ball.getX, ball.getY)
       return coor if coor.is_a?(Array)
 
       #right
-      return intersection(@x+@width, @y, 0, @height, bx, by, dx, dy)
+      return intersection(@x+@width, @y, 0, @height, bx, by, ball.getX, ball.getY)
     end
 
-    def intersection(x, y,rx, ry, bx, by, dx, dy)
+    def intersection(x, y, rx, ry, bx, by, dx, dy)
       #Determinant Check (Parallel or collinear)
       return 0 if (rx * by) - (bx * ry) == 0
       
@@ -55,8 +56,8 @@
       u = ((y - dy) * rx - ry * (x - dx)) / ((rx * by) - (bx * ry))
       
       #Collison check
-      return [x+(t*rx), y+(t*ry)] if u.between?(0,1) && t.between?(0,1)
-      return 0
+      return [dx+((u-0.7)*bx), dy+((u-0.7)*by)] if u.between?(0,1) && t.between?(0,1)
+      return false
     end
   end
   
