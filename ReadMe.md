@@ -16,11 +16,9 @@ The project laid dormant for some time, yet the messy collisions and poor physic
  - [X] Rework collision detection based on segment intersection
  - [X] Account for level walls
  - [X] Determine which face of a platform has been hit
- - [ ] After updating velocity components in a collision, it is possible for the ball to still collide unchecked. This occurs in corners, as the first collision is resolved but the inverted velocity compoenent puts the ball into a second unchecked collision. Must resolve through a more reobust solution that prevents these sequential collisions. (Can perform a limited number of sequential checks, verifying the next update does not collide. Or, you may be able to stop updating x and y after a collision has occured, just correcting the collision for the current frame).
-- [ ] Player loses control of ball after MaxSpeed is hit. Need a new approach that allows the player to give a brief acceleration (jerk).
-- [ ] Ball can start inside a box. Need to alter ball's initial point to check for collision with box, generating positions until not colliding.
-- [ ] General velocity oddities. Options:
- - [ ] Reintroduce Friction in a more controlled manner
- - [ ] Introduce a Decay each update
- - [ ] Reduce Vy multiplicatively as a factor of height
+ - [ ] Potential collision miss after correcting a first collision (Under low velocities, this defect is masked)
+- [X] Player loses control of ball after MaxSpeed is hit.
+- [X] Ball can start inside a box. Need to alter ball's initial point to check for collision with box, generating positions until not colliding.
+- [ ] Introduce stronger physics, involving acceleration and velocity decay
+    - [ ] Will lead into potential collision misses if position of ball is not updated to be above the collision point. This must still be fixed for the game window check (already handled in platform check)
 
