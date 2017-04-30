@@ -12,7 +12,7 @@ Using the GOSU Gem, a minigame was made to control a bouncing ball using pseudo-
 The project laid dormant for some time, yet the messy collisions and poor physics left me disgruntled. This project has now resumed development, slowly being repaired for better collision detection and perhaps a little more convincing physics. Just becuase the job can't go undone.
 
 ## Current TODO / Fixes
-- [ ] Ball ignores collisions with platforms sporadically
+- [X] Ball ignores collisions with platforms sporadically
  - [X] Rework collision detection based on segment intersection
  - [X] Account for level walls
  - [X] Determine which face of a platform has been hit
@@ -20,5 +20,6 @@ The project laid dormant for some time, yet the messy collisions and poor physic
 - [X] Player loses control of ball after MaxSpeed is hit.
 - [X] Ball can start inside a box. Need to alter ball's initial point to check for collision with box, generating positions until not colliding.
 - [ ] Introduce stronger physics, involving acceleration and velocity decay
-    - [ ] Will lead into potential collision misses if position of ball is not updated to be above the collision point. This must still be fixed for the game window check (already handled in platform check)
+    - [X] Will lead into potential collision misses if position of ball is not updated to be above the collision point. This must still be fixed for the game window check (already handled in platform check)
+    - [ ] Amount of adjustment after collision is tied to a scaler of the distance the ball travels, which varies under new physics. This makes the net adjustment a product of the speed (higher speed = greater distance traveled = ball placed further from the platforms). Will need a better way to normalize the adjustment independent of the current speed (can also be viewed as the current rx or ry)
 
