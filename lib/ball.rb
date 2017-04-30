@@ -1,14 +1,21 @@
 class Ball
     def initialize(win)
-        @radius = 10
         @win = win
-        @gravity = 1.25
+        @image = Gosu::Image.new(win, 'media/ball.png', true)
+        @radius = 10
+
         @x = rand(@radius..(win.width - @radius))
         @y = 15
         @vx = 2
         @vy = 3
-        @maxSpeed = 15
-        @image = Gosu::Image.new(win, 'media/ball.png', true)
+        scale = 1.7
+        @accX = 0.2 * scale
+        @decX = 0.3 * scale
+        @accY = 0.5 * scale
+        @maxVx = 5.0 * scale
+        @maxVy = 10.0 * scale
+
+        @jumpVy = 16.0 * scale
         @jumppressed = false
     end
 
@@ -18,22 +25,39 @@ class Ball
 
     def move(platforms)
         # 1. Check if buttons are being used to manipulate, account for them.
-        @vx -= 0.75 if Gosu.button_down?(Gosu::KbLeft)
-        @vx += 0.75 if Gosu.button_down?(Gosu::KbRight)
+        playerInput = false
+        if Gosu.button_down?(Gosu::KbLeft)
+            @vx -= @accX
+            playerInput = true
+        end
+
+        if Gosu.button_down?(Gosu::KbRight)
+            @vx += @accX
+            playerInput = true
+        end
 
         if Gosu.button_down?(Gosu::KbSpace) and !@jumppressed
             @jumppressed = true
-            @vy = -15
-        elsif not Gosu.button_down?(Gosu::KbSpace)
-            @jumppressed = false
+            @vy = -@jumpVy
         end
+
+        @jumppressed = false if not Gosu.button_down?(Gosu::KbSpace)
             
 
-        # 2. Update Gravity & constraints
-        @vy += @gravity
-        @vy = @maxSpeed if @vy > @maxSpeed
-        @vx = @maxSpeed if @vx > @maxSpeed
-        @vx = -@maxSpeed if @vx < -@maxSpeed
+        # 2a. Update Gravity & constraints
+        @vx = @maxVx if @vx > @maxVx
+        @vx = -@maxVx if @vx < -@maxVx
+        @vy = -@maxVy if @vy < -@maxVy
+        @vy += @accY
+
+        # 2b. Apply natural deceleration
+        if !playerInput
+            @vx += @decX if @vx < 0
+            @vx -= @decX if @vx > 0
+
+            # Keep the ball idle if it's moving slower than the deceleration factor
+            @vx = 0 if @vx.abs < @decX
+        end
 
         # 3. Compute where the ball *would* land, if updated right now.
         dx = @x + @vx
