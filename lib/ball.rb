@@ -76,7 +76,7 @@ class Ball
         if !coor
             platforms.each do |plat|
                 #2a
-                coor = plat.verticalCollision?(self, dx, dy)
+                coor = plat.verticalCollision?(@x, @y, dx, dy)
                 if coor.is_a?(Array)
                     dx = coor[0]
                     dy = coor[1]
@@ -85,7 +85,7 @@ class Ball
                 end
 
                 #2b
-                coor = plat.horizontalCollision?(self, dx, dy)
+                coor = plat.horizontalCollision?(@x, @y, dx, dy)
                 if coor.is_a?(Array)
                     dx = coor[0]
                     dy = coor[1]
@@ -139,13 +139,5 @@ class Ball
       #Collison check
       return [x+(t*rx), y+(t*ry)] if u.between?(0,1) && t.between?(0,1)
       return false
-    end
-
-    def getX
-        @x
-    end
-
-    def getY
-        @y
     end
 end
